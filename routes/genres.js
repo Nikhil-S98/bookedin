@@ -3,6 +3,8 @@ const router = express.Router();
 
 const Genre = require('../models/genre');
 
+const helpers = require('./helpers');
+
 router.get('/', function(req, res, next) {
   const genres = Genre.all
   res.render('genres/index', { title: 'BookedIn || Genres', genres: genres });
@@ -30,7 +32,10 @@ router.get('/edit', async (req, res, next) => {
   res.render('genres/form', { title: 'BookedIn || Genres', genre: genre, genreIndex: genreIndex });
 });
 
-
-
+router.get('/register', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  };
+});
 
 module.exports = router;

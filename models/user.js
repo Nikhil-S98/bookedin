@@ -1,7 +1,7 @@
 const users = [
   {
-    email:"rvanmech@pratt.edu",
-    name:"Rik",
+    email:"nshetty@pratt.edu",
+    name:"nikhil",
     salt:"9821ea0e75c6046e96e38f905ab0e436",
     encryptedPassword:"31df8d4e1b6ca4facf4e45f55307704f7ba794c6c265495964c0a768faab4b6b"
   }

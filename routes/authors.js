@@ -3,10 +3,19 @@ const router = express.Router();
 
 const Author = require('../models/author');
 
+const helpers = require('./helpers');
+
+router.get('/', async (req, res, next) => {
+  let authors = await Author.all();
+  res.render('authors/index', { title: 'BookedIn || Authors', authors: authors });
+ });
+ 
+/*
 router.get('/', function(req, res, next) {
   const authors = Author.all
   res.render('authors/index', { title: 'BookedIn || Authors', authors: authors });
 });
+*/
 
 router.get('/form', async (req, res, next) => {
   res.render('authors/form', { title: 'BookedIn || Authors' });
@@ -30,8 +39,10 @@ router.get('/edit', async (req, res, next) => {
   res.render('authors/form', { title: 'BookedIn || Authors', author: author, authorIndex: authorIndex });
 });
 
-
-
+router.get('/register', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  };
+});
 
 module.exports = router;
-

@@ -2,12 +2,24 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/user');
+const Book = require('../models/book');
+const BookUser = require('../models/book_user');
+
+const helpers = require('./helpers');
 
 router.get('/register', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  }
+
   res.render('users/register', { title: 'BookedIn || User registration' });
 });
 
 router.post('/register', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  }
+
   console.log('body: ' + JSON.stringify(req.body))
   let result = User.register(req.body);
   if (result) {
@@ -29,10 +41,18 @@ router.post('/register', async (req, res, next) => {
 });
 
 router.get('/login', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  }
+
   res.render('users/login', { title: 'BookedIn || User login' });
 });
 
 router.post('/login', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  }
+
   console.log('body: ' + JSON.stringify(req.body))
   let user = User.login(req.body);
   if(user) {
@@ -67,6 +87,25 @@ router.post('/logout', async (req, res, next) => {
   };
   res.redirect(303, '/')
 });
+
+router.get('/register', async (req, res, next) => {
+  if (helpers.isLoggedIn(req, res)) {
+    return
+  };
+});
+
+router.get('/profile', async (req, res, next) => {
+  const booksUser = BookUser.AllForUser(req.session.currentUser.email);
+  booksUser.forEach((bookUser) => {
+    bookUser.book = Book.get(bookUser.bookId)
+  })
+  res.render('users/profile',
+    { title: 'BookedIn || Profile',
+      user: req.session.currentUser,
+      booksUser: booksUser });
+});
+
+
 
 module.exports = router;
 
