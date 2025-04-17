@@ -45,6 +45,7 @@ app.use(expressSession({
   saveUninitialized: false,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }));
+
 app.use(csrf({ cookie: true }))
 app.use((req, res, next) => {
   res.locals._csrfToken = req.csrfToken()
@@ -61,8 +62,6 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.session.currentUser
   next()
 })
-
-
 
 // Application logic related
 app.use('/', indexRouter);
